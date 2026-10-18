@@ -1,15 +1,15 @@
 
-@import url("https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Epilogue:wght@500;700&display=swap');
 
 :root {
-  font-family: "Epilogue", sans-serif;
+  font-family: 'Epilogue', Arial, sans-serif;
   color: #151515;
   background: #fafafa;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-weight: 500;
+  --muted: #696969;
+  --border: #a9a9a9;
 }
 
 * {
@@ -17,7 +17,6 @@
 }
 
 html {
-  min-width: 320px;
   scroll-behavior: smooth;
 }
 
@@ -25,10 +24,6 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-}
-
-body.menu-is-open {
-  overflow: hidden;
 }
 
 button,
@@ -47,25 +42,21 @@ a {
 
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #151515;
+  outline: 3px solid #7268d9;
   outline-offset: 4px;
 }
 
-.app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+/* Header */
 
-.header {
-  position: relative;
-  z-index: 30;
+.site-header {
   width: 100%;
-  min-height: 80px;
+  height: 88px;
   display: flex;
   align-items: center;
-  gap: 60px;
+  gap: 62px;
   padding: 0 40px;
+  position: relative;
+  z-index: 10;
 }
 
 .logo {
@@ -81,17 +72,16 @@ a:focus-visible {
 }
 
 .nav {
-  flex: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-width: 0;
+  flex: 1;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 38px;
+  gap: 39px;
 }
 
 .nav-item {
@@ -105,72 +95,102 @@ a:focus-visible {
   padding: 12px 0;
   border: 0;
   background: transparent;
-  color: #696969;
+  color: var(--muted);
   font-size: 14px;
-  font-weight: 500;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: color 0.15s ease;
 }
 
 .nav-link:hover,
-.nav-link.link-open,
-.simple-link:hover,
-.login-link:hover {
+.nav-link.link-open {
   color: #151515;
 }
 
 .chevron {
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
+  color: #7268d9;
+  transition: transform 0.16s ease;
 }
 
-.chevron.rotated {
+.dropdown-active .chevron {
   transform: rotate(180deg);
 }
 
-/* Dropdowns remain mounted so automated tests can find them. */
-.dropdown-list {
-  display: none;
-  position: absolute;
-  top: calc(100% + 8px);
-  z-index: 40;
-  flex-direction: column;
-  gap: 12px;
-  min-width: 155px;
-  padding: 20px 22px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 10px 35px rgb(0 0 0 / 14%);
+/* Login and Register */
+
+.registration {
+  display: flex;
+  align-items: center;
+  gap: 34px;
 }
 
-.dropdown-active > .dropdown-list {
+.registration button {
+  padding: 10px 0;
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  font-size: 14px;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.registration button:hover {
+  color: #151515;
+}
+
+.registration .register-button {
+  border: 1.5px solid var(--muted);
+  border-radius: 14px;
+  padding: 12px 20px;
+}
+
+.registration .register-button:hover {
+  border-color: #151515;
+}
+
+/* Dropdown menus */
+
+.dropdown-list {
+  position: absolute;
+  top: calc(100% + 10px);
+  z-index: 20;
+  min-width: 154px;
   display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 17px 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 35px #00000019;
+  animation: dropdown-in 0.13s ease-out;
 }
 
 .features-dropdown {
   right: 0;
-  min-width: 175px;
+  min-width: 178px;
 }
 
 .company-dropdown {
   left: 0;
-  min-width: 130px;
+  min-width: 128px;
 }
 
+/* The wrapper is .dropdown-link; the clickable element is its child <a>. */
+
 .dropdown-link {
-  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 28px;
 }
 
 .dropdown-link a {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 13px;
   width: 100%;
-  min-height: 24px;
-  color: #696969;
+  min-height: 28px;
+  color: var(--muted);
   font-size: 13px;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: color 0.15s ease;
 }
 
 .dropdown-link a:hover {
@@ -178,126 +198,89 @@ a:focus-visible {
 }
 
 .feature-icon {
+  width: 16px;
+  height: 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 17px;
-  height: 17px;
   flex-shrink: 0;
 }
 
-.feature-icon.purple {
-  color: #726cee;
+.todo {
+  color: #7268d9;
 }
 
-.feature-icon.blue {
+.calendar {
   color: #4bb1da;
 }
 
-.feature-icon.yellow {
-  color: #edd556;
+.reminders {
+  color: #e7b943;
 }
 
-.feature-icon.green {
-  color: #8cdb83;
+.planning {
+  color: #8e4cb6;
 }
 
-.auth-links {
-  display: flex;
-  align-items: center;
-  gap: 36px;
-  flex-shrink: 0;
-}
+/* Mobile menu controls are hidden on desktop */
 
-.login-link {
-  color: #696969;
-  font-size: 14px;
-  transition: color 0.2s ease;
-}
-
-.register-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 104px;
-  min-height: 42px;
-  padding: 0 18px;
-  border: 1.5px solid #696969;
-  border-radius: 14px;
-  color: #696969;
-  font-size: 14px;
-  transition:
-    color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.register-link:hover {
-  color: #151515;
-  border-color: #151515;
-}
-
+.mobile-nav-top,
 .open-menu,
 .close-menu,
-.mobile-nav-top,
 .overlay {
   display: none;
 }
 
-.main {
-  flex: 1;
-  width: 100%;
-}
+/* Hero */
 
 .hero {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 55px 9.5% 70px;
-}
-
-.hero-content {
+  width: min(1110px, calc(100% - 80px));
+  margin: 36px auto 0;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 480px);
   align-items: center;
-  gap: 8%;
+  gap: clamp(48px, 9vw, 125px);
 }
 
 .hero-copy {
-  padding-top: 38px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-self: stretch;
+  padding-top: 66px;
 }
 
-.hero-copy h1 {
+.text-content {
+  max-width: 540px;
+}
+
+.text-content h1 {
   margin: 0;
-  font-size: clamp(48px, 5.2vw, 80px);
+  font-size: clamp(54px, 5.3vw, 78px);
+  line-height: 1.02;
+  letter-spacing: -3.2px;
   font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -2.5px;
 }
 
-.hero-copy p {
+.text-content p {
   max-width: 445px;
-  margin: 42px 0 32px;
-  color: #696969;
-  font-size: 18px;
-  line-height: 1.65;
+  margin: 42px 0 34px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.7;
 }
 
 .learn-more {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 138px;
-  min-height: 50px;
-  padding: 0 22px;
-  border: 1px solid #151515;
+  border: 1.5px solid #151515;
   border-radius: 14px;
   background: #151515;
-  color: #fff;
-  font-size: 15px;
+  color: white;
+  padding: 16px 25px;
+  min-width: 137px;
+  font-size: 14px;
   font-weight: 700;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
 .learn-more:hover {
@@ -305,120 +288,144 @@ a:focus-visible {
   color: #151515;
 }
 
-.client-logos {
+.main-picture {
+  display: block;
+  width: 100%;
+}
+
+.main-picture img {
+  display: block;
+  width: 100%;
+  max-height: 570px;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Client logos */
+
+.clients {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 20px;
   width: 100%;
-  max-width: 465px;
-  margin-top: 105px;
+  max-width: 475px;
+  margin-top: 75px;
 }
 
-.client-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 0;
-}
-
-.client-logo img {
+.clients img {
   display: block;
-  max-width: 100%;
+  max-width: 22%;
   height: auto;
-}
-
-.client-logo.databiz img {
-  width: 88px;
-}
-
-.client-logo.audiophile img {
-  width: 72px;
-}
-
-.client-logo.meet img {
-  width: 78px;
-}
-
-.client-logo.maker img {
-  width: 68px;
-}
-
-.hero-image {
-  width: 100%;
-  max-width: 480px;
-  justify-self: end;
-}
-
-.hero-image picture,
-.hero-image img {
-  display: block;
-  width: 100%;
-}
-
-.hero-image img {
-  height: auto;
+  max-height: 32px;
   object-fit: contain;
 }
 
+.clients img:nth-child(2) {
+  max-height: 27px;
+}
+
+.clients img:nth-child(3),
+.clients img:nth-child(4) {
+  max-height: 30px;
+}
+
+/* Footer */
+
 .attribution {
-  padding: 18px 12px;
-  color: #696969;
-  font-size: 12px;
+  padding: 24px 16px 18px;
   text-align: center;
+  color: #696969;
+  font-size: 11px;
 }
 
 .attribution a {
-  color: #151515;
   text-decoration: underline;
-  text-underline-offset: 3px;
+}
+
+.attribution a:hover {
+  color: #151515;
+}
+
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Large desktop */
+
+@media (min-width: 1200px) {
+  .hero {
+    margin-top: 38px;
+  }
+
+  .hero-copy {
+    padding-top: 75px;
+  }
 }
 
 /* Tablet */
-@media (max-width: 1000px) {
-  .header {
+
+@media (max-width: 900px) and (min-width: 701px) {
+  .site-header {
     gap: 35px;
-    padding: 0 25px;
+    padding: 0 24px;
   }
 
   .nav-links {
-    gap: 22px;
+    gap: 23px;
   }
 
-  .auth-links {
-    gap: 20px;
+  .registration {
+    gap: 18px;
   }
 
   .hero {
-    padding-right: 6%;
-    padding-left: 6%;
+    width: calc(100% - 48px);
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 42%);
+    gap: 35px;
+    margin-top: 35px;
   }
 
-  .hero-content {
-    gap: 5%;
+  .hero-copy {
+    padding-top: 30px;
   }
 
-  .hero-copy h1 {
-    font-size: clamp(45px, 5.5vw, 64px);
+  .text-content h1 {
+    font-size: clamp(48px, 6vw, 64px);
+    letter-spacing: -2px;
   }
 
-  .hero-copy p {
-    font-size: 16px;
+  .text-content p {
+    margin: 28px 0;
+    font-size: 15px;
   }
 
-  .client-logos {
-    gap: 16px;
-    margin-top: 75px;
+  .clients {
+    margin-top: 48px;
+    gap: 14px;
   }
 }
 
-/* Mobile navigation */
+/* Mobile */
+
 @media (max-width: 700px) {
-  .header {
-    min-height: 72px;
+  body.menu-is-open {
+    overflow: hidden;
+  }
+
+  .site-header {
+    height: 72px;
+    padding: 0 20px;
     justify-content: space-between;
     gap: 20px;
-    padding: 0 20px;
   }
 
   .logo img {
@@ -429,33 +436,24 @@ a:focus-visible {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    padding: 0;
+    padding: 4px 0 4px 8px;
     border: 0;
     background: transparent;
     color: #151515;
   }
 
-  /*
-   * Keep the overlay's box outside the right-side navigation panel.
-   * This also prevents the navigation from covering the overlay's center.
-   */
+  /* Overlay is visible outside the navigation panel. */
+
   .overlay {
     display: block;
     position: fixed;
-    top: 0;
-    right: max(240px, min(65vw, 280px));
-    bottom: 0;
-    left: 0;
+    inset: 0;
     z-index: 15;
     background: rgb(0 0 0 / 50%);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition:
-      opacity 0.2s ease,
-      visibility 0.2s ease;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
   }
 
   .overlay.visible {
@@ -464,52 +462,44 @@ a:focus-visible {
     pointer-events: auto;
   }
 
+  /* Mobile navigation sits above the overlay. */
+
   .nav {
+    display: flex;
     position: fixed;
+    z-index: 20;
     top: 0;
     right: 0;
     bottom: 0;
-    z-index: 20;
-    display: flex;
+    width: min(65vw, 280px);
+    min-width: 240px;
+    padding: 20px 24px 32px;
+    background: #fafafa;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
     gap: 30px;
-    width: min(65vw, 280px);
-    min-width: 240px;
-    height: 100dvh;
-    padding: 20px 24px 32px;
-    overflow-y: auto;
-    background: #fff;
-    box-shadow: -8px 0 25px rgb(0 0 0 / 5%);
-    transform: translateX(105%);
+    transform: translateX(100%);
     visibility: hidden;
-    pointer-events: none;
-    transition:
-      transform 0.25s ease,
-      visibility 0.25s ease;
+    transition: transform 0.22s ease, visibility 0.22s ease;
+    overflow-y: auto;
   }
 
   .nav.nav-open {
     transform: translateX(0);
     visibility: visible;
-    pointer-events: auto;
   }
 
   .mobile-nav-top {
     display: flex;
     justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-    min-height: 32px;
+    min-height: 30px;
   }
 
   .close-menu {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -520,42 +510,28 @@ a:focus-visible {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
-    width: 100%;
+    gap: 8px;
+  }
+
+  .nav-link {
+    padding: 10px 0;
+    font-size: 16px;
   }
 
   .nav-item {
     width: 100%;
   }
 
-  .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 12px;
-    width: 100%;
-    padding: 8px 0;
-    color: #696969;
-    font-size: 15px;
-    text-align: left;
-  }
-
-  .simple-link {
-    display: flex;
-  }
+  /* Dropdowns expand below their buttons on mobile. */
 
   .dropdown-list {
     position: static;
-    top: auto;
-    right: auto;
-    left: auto;
-    gap: 14px;
-    width: 100%;
-    min-width: 0;
-    padding: 12px 0 8px 18px;
-    border-radius: 0;
-    background: transparent;
     box-shadow: none;
+    border-radius: 0;
+    padding: 8px 0 8px 22px;
+    background: transparent;
+    gap: 7px;
+    animation: none;
   }
 
   .features-dropdown,
@@ -563,221 +539,126 @@ a:focus-visible {
     min-width: 0;
   }
 
-  .dropdown-link a {
-    font-size: 14px;
+  .dropdown-link {
+    min-height: 30px;
   }
 
-  .auth-links {
+  .dropdown-link a {
+    min-height: 30px;
+    font-size: 15px;
+    gap: 14px;
+  }
+
+  .registration {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 16px;
-    width: 100%;
-    margin-top: 0;
+    gap: 8px;
+    margin-top: auto;
   }
 
-  .login-link {
-    padding: 8px 0;
-    font-size: 14px;
-    text-align: center;
+  .registration button {
+    width: 100%;
+    font-size: 15px;
+    padding: 11px;
   }
 
-  .register-link {
-    width: 100%;
-    min-height: 42px;
+  .registration .register-button {
+    border-radius: 14px;
+    padding: 11px;
   }
+
+  /* Mobile hero */
 
   .hero {
-    padding: 20px 0 45px;
-  }
-
-  .hero-content {
+    width: 100%;
+    margin: 0 auto;
     display: flex;
     flex-direction: column-reverse;
     gap: 0;
   }
 
-  .hero-image {
+  .main-picture {
     width: 100%;
-    max-width: none;
-    margin: 0 auto;
   }
 
-  .hero-image img {
+  .main-picture img {
     width: 100%;
-    max-height: 380px;
+    max-height: none;
+    height: auto;
     object-fit: contain;
   }
 
   .hero-copy {
     width: 100%;
-    padding: 45px 20px 0;
+    padding: 42px 20px 0;
+    align-items: center;
     text-align: center;
   }
 
-  .hero-copy h1 {
-    font-size: clamp(34px, 9vw, 44px);
-    line-height: 1.15;
-    letter-spacing: -1.5px;
+  .text-content {
+    width: 100%;
+    max-width: 460px;
+  }
+
+  .text-content h1 {
+    font-size: clamp(34px, 9vw, 40px);
+    line-height: 1.12;
+    letter-spacing: -1.4px;
     white-space: normal;
   }
 
-  .hero-copy h1 br {
+  .desktop-break {
     display: none;
   }
 
-  .hero-copy p {
-    max-width: 450px;
-    margin: 20px auto 24px;
+  .text-content p {
+    margin: 19px auto 24px;
+    max-width: 430px;
     font-size: 16px;
-    line-height: 1.6;
+    line-height: 1.62;
   }
 
   .learn-more {
-    min-height: 48px;
+    min-width: 137px;
+    padding: 15px 23px;
   }
 
-  .client-logos {
-    max-width: 440px;
-    margin: 48px auto 0;
+  .clients {
+    width: 100%;
+    max-width: 460px;
     gap: 18px;
+    margin-top: 48px;
   }
 
-  .client-logo.databiz img {
-    width: 72px;
+  .clients img {
+    max-width: 22%;
+    max-height: 24px;
   }
 
-  .client-logo.audiophile img {
-    width: 58px;
+  .clients img:nth-child(2) {
+    max-height: 21px;
   }
 
-  .client-logo.meet img {
-    width: 64px;
-  }
-
-  .client-logo.maker img {
-    width: 58px;
+  .clients img:nth-child(3),
+  .clients img:nth-child(4) {
+    max-height: 23px;
   }
 
   .attribution {
-    padding: 16px 12px;
-    line-height: 1.8;
+    padding-top: 38px;
   }
 }
 
-/* Small mobile screens */
-@media (max-width: 360px) {
-  .header {
-    padding: 0 16px;
-  }
+/* Reduced motion accessibility */
 
-  .hero-copy {
-    padding-right: 16px;
-    padding-left: 16px;
-  }
-
-  .hero-copy h1 {
-    font-size: 33px;
-  }
-
-  .hero-copy p {
-    font-size: 14px;
-  }
-
-  .client-logos {
-    gap: 12px;
-  }
-
-  .client-logo.databiz img {
-    width: 62px;
-  }
-
-  .client-logo.audiophile img {
-    width: 50px;
-  }
-
-  .client-logo.meet img {
-    width: 54px;
-  }
-
-  .client-logo.maker img {
-    width: 48px;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
-
-
-.auth-links .login button,
-.auth-links .registration button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 42px;
-  padding: 0 18px;
-  border: 0;
-  background: transparent;
-  color: #696969;
-  font-size: 14px;
-  cursor: pointer;
-}
-
-.auth-links .login button:hover {
-  color: #151515;
-}
-
-.auth-links .registration button {
-  min-width: 104px;
-  border: 1.5px solid #696969;
-  border-radius: 14px;
-}
-
-.auth-links .registration button:hover {
-  border-color: #151515;
-  color: #151515;
-}
-
-.text-content {
-  min-width: 0;
-  padding-top: 38px;
-}
-
-.text-content h1 {
-  margin: 0;
-  font-size: clamp(48px, 5.2vw, 80px);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -2.5px;
-}
-
-.text-content p {
-  max-width: 445px;
-  margin: 42px 0 32px;
-  color: #696969;
-  font-size: 18px;
-  line-height: 1.65;
-}
-
-.clients {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  width: 100%;
-  max-width: 465px;
-  margin-top: 105px;
-}
-
-.clients img {
-  display: block;
-  width: auto;
-  max-width: 22%;
-  height: auto;
-  object-fit: contain;
-}
-
-.hero-image img {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
