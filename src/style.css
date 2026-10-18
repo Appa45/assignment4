@@ -444,16 +444,11 @@ a:focus-visible {
 
   /* Overlay is visible outside the navigation panel. */
 
- 
-@media (max-width: 700px) {
   .overlay {
     display: block;
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 240px;
-    bottom: 0;
-    z-index: 25;
+    inset: 0;
+    z-index: 15;
     background: rgb(0 0 0 / 50%);
     opacity: 0;
     visibility: hidden;
@@ -466,12 +461,6 @@ a:focus-visible {
     visibility: visible;
     pointer-events: auto;
   }
-
-  .nav {
-    z-index: 30;
-  }
-}
-
 
   /* Mobile navigation sits above the overlay. */
 
@@ -544,14 +533,6 @@ a:focus-visible {
     gap: 7px;
     animation: none;
   }
-
-  .dropdown-list {
-  display: none;
-}
-
-.dropdown-active > .dropdown-list {
-  display: flex;
-}
 
   .features-dropdown,
   .company-dropdown {
@@ -679,5 +660,41 @@ a:focus-visible {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+}
+
+
+.dropdown-list {
+  display: none;
+}
+
+.dropdown-active > .dropdown-list {
+  display: flex;
+}
+
+.nav-link.link-open {
+  color: #151515;
+}
+
+@media (max-width: 700px) {
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0 240px 0 0;
+    z-index: 25;
+    background: rgb(0 0 0 / 50%);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .overlay.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nav {
+    z-index: 30;
   }
 }
