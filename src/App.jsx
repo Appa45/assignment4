@@ -10,6 +10,8 @@ import {
   ListTodo,
 } from "lucide-react";
 
+import "./style.css";
+
 const features = [
   { label: "Todo List", icon: ListTodo, cls: "todo", href: "#todo-list" },
   { label: "Calendar", icon: CalendarDays, cls: "calendar", href: "#calendar" },
@@ -78,10 +80,7 @@ function App() {
           alt="snap's logo"
           onClick={closeMenus}
         >
-          <img
-            src="./assets/images/logo.svg"
-            alt="snap's logo"
-          />
+          <img src="./assets/images/logo.svg" alt="snap's logo" />
         </a>
 
         <button
@@ -117,6 +116,7 @@ function App() {
           </div>
 
           <div className="nav-links">
+            {/* Features dropdown */}
             <div
               className={`nav-item dropdown-item ${
                 activeDropdown === "features" ? "dropdown-active" : ""
@@ -132,33 +132,38 @@ function App() {
               >
                 Features
                 <ChevronDown
-                  className="chevron"
+                  className={`chevron ${
+                    activeDropdown === "features" ? "rotated" : ""
+                  }`}
                   size={14}
                 />
               </button>
 
-              {activeDropdown === "features" && (
-                <div className="dropdown-list features-dropdown">
-                  {features.map(({ label, icon: Icon, cls, href }) => (
-                    <div className="dropdown-link" key={label}>
-                      <a
-                        href={href}
-                        aria-label={
-                          label === "Todo List" ? "todo-list" : undefined
-                        }
-                        onClick={closeMenus}
-                      >
-                        <span className={`feature-icon ${cls}`}>
-                          <Icon size={15} />
-                        </span>
-                        <span>{label}</span>
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div
+                className="dropdown-list features-dropdown"
+                aria-hidden={activeDropdown !== "features"}
+              >
+                {features.map(({ label, icon: Icon, cls, href }) => (
+                  <div className="dropdown-link" key={label}>
+                    <a
+                      href={href}
+                      aria-label={
+                        label === "Todo List" ? "todo-list" : undefined
+                      }
+                      tabIndex={activeDropdown === "features" ? 0 : -1}
+                      onClick={closeMenus}
+                    >
+                      <span className={`feature-icon ${cls}`}>
+                        <Icon size={15} />
+                      </span>
+                      <span>{label}</span>
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
 
+            {/* Company dropdown */}
             <div
               className={`nav-item dropdown-item ${
                 activeDropdown === "company" ? "dropdown-active" : ""
@@ -174,22 +179,29 @@ function App() {
               >
                 Company
                 <ChevronDown
-                  className="chevron"
+                  className={`chevron ${
+                    activeDropdown === "company" ? "rotated" : ""
+                  }`}
                   size={14}
                 />
               </button>
 
-              {activeDropdown === "company" && (
-                <div className="dropdown-list company-dropdown">
-                  {company.map(({ label, href }) => (
-                    <div className="dropdown-link" key={label}>
-                      <a href={href} onClick={closeMenus}>
-                        {label}
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div
+                className="dropdown-list company-dropdown"
+                aria-hidden={activeDropdown !== "company"}
+              >
+                {company.map(({ label, href }) => (
+                  <div className="dropdown-link" key={label}>
+                    <a
+                      href={href}
+                      tabIndex={activeDropdown === "company" ? 0 : -1}
+                      onClick={closeMenus}
+                    >
+                      {label}
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <a
@@ -289,11 +301,7 @@ function App() {
 
       <footer className="attribution" id="about">
         Challenge by{" "}
-        <a
-          href="https://crio.do"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a href="https://crio.do" target="_blank" rel="noreferrer">
           Crio.Do
         </a>
         . Coded with care.
