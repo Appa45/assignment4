@@ -4,43 +4,96 @@ import {
   ChevronDown,
   Menu,
   X,
+  Check,
   CalendarDays,
   Bell,
   Clock,
   ListTodo,
 } from "lucide-react";
+import "./style.css";
 
 const features = [
-  { label: "Todo List", icon: ListTodo, cls: "todo", href: "#todo-list" },
-  { label: "Calendar", icon: CalendarDays, cls: "calendar", href: "#calendar" },
-  { label: "Reminders", icon: Bell, cls: "reminders", href: "#reminders" },
-  { label: "Planning", icon: Clock, cls: "planning", href: "#planning" },
+  {
+    label: "Todo List",
+    icon: ListTodo,
+    cls: "purple",
+    href: "#todo-list",
+  },
+  {
+    label: "Calendar",
+    icon: CalendarDays,
+    cls: "blue",
+    href: "#calendar",
+  },
+  {
+    label: "Reminders",
+    icon: Bell,
+    cls: "yellow",
+    href: "#reminders",
+  },
+  {
+    label: "Planning",
+    icon: Clock,
+    cls: "green",
+    href: "#planning",
+  },
 ];
 
-const company = [
+const companyLinks = [
   { label: "History", href: "#history" },
   { label: "Our Team", href: "#team" },
   { label: "Blog", href: "#blog" },
 ];
 
-function App() {
+const clients = [
+  {
+    name: "databiz",
+    className: "databiz",
+    src: "./assets/images/client-databiz.svg",
+  },
+  {
+    name: "audiophile",
+    className: "audiophile",
+    src: "./assets/images/client-audiophile.svg",
+  },
+  {
+    name: "meet",
+    className: "meet",
+    src: "./assets/images/client-meet.svg",
+  },
+  {
+    name: "maker",
+    className: "maker",
+    src: "./assets/images/client-maker.svg",
+  },
+];
+
+export default function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const navRef = useRef(null);
 
+  const closeMenus = () => {
+    setMobileOpen(false);
+    setActiveDropdown(null);
+  };
+
+  const toggleDropdown = (name) => {
+    setActiveDropdown((current) => (current === name ? null : name));
+  };
+
   useEffect(() => {
-    function handleOutsideClick(event) {
+    const handleOutsideClick = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
         setActiveDropdown(null);
       }
-    }
+    };
 
-    function handleEscape(event) {
+    const handleEscape = (event) => {
       if (event.key === "Escape") {
-        setActiveDropdown(null);
-        setMobileOpen(false);
+        closeMenus();
       }
-    }
+    };
 
     document.addEventListener("mousedown", handleOutsideClick);
     document.addEventListener("keydown", handleEscape);
@@ -59,25 +112,10 @@ function App() {
     };
   }, [mobileOpen]);
 
-  function closeMenus() {
-    setActiveDropdown(null);
-    setMobileOpen(false);
-  }
-
-  function toggleDropdown(name) {
-    setActiveDropdown((current) => (current === name ? null : name));
-  }
-
   return (
     <div className="app">
-      <header className="site-header">
-        <a
-          className="logo"
-          href="#"
-          aria-label="Snap home"
-          alt="snap's logo"
-          onClick={closeMenus}
-        >
+      <header className="header">
+        <a className="logo" href="#" aria-label="Snap home" alt="snap's logo">
           <img
             src="./assets/images/logo.svg"
             alt="snap's logo"
@@ -85,19 +123,19 @@ function App() {
         </a>
 
         <button
-          type="button"
           className="open-menu"
+          type="button"
           aria-label="Open menu"
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen(true)}
         >
-          <Menu size={34} />
+          <Menu size={30} strokeWidth={2} />
         </button>
 
         <div
           className={`overlay ${mobileOpen ? "visible" : ""}`}
-          aria-hidden={!mobileOpen}
           onClick={closeMenus}
+          aria-hidden={!mobileOpen}
         />
 
         <nav
@@ -107,12 +145,12 @@ function App() {
         >
           <div className="mobile-nav-top">
             <button
-              type="button"
               className="close-menu"
+              type="button"
               aria-label="Close menu"
               onClick={closeMenus}
             >
-              <X size={32} />
+              <X size={30} />
             </button>
           </div>
 
@@ -132,31 +170,35 @@ function App() {
               >
                 Features
                 <ChevronDown
-                  className="chevron"
-                  size={14}
+                  className={`chevron ${
+                    activeDropdown === "features" ? "rotated" : ""
+                  }`}
+                  size={15}
                 />
               </button>
 
-              {activeDropdown === "features" && (
-                <div className="dropdown-list features-dropdown">
-                  {features.map(({ label, icon: Icon, cls, href }) => (
-                    <div className="dropdown-link" key={label}>
-                      <a
-                        href={href}
-                        aria-label={
-                          label === "Todo List" ? "todo-list" : undefined
-                        }
-                        onClick={closeMenus}
-                      >
-                        <span className={`feature-icon ${cls}`}>
-                          <Icon size={15} />
-                        </span>
-                        <span>{label}</span>
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div
+                className="dropdown-list features-dropdown"
+                aria-hidden={activeDropdown !== "features"}
+              >
+                {features.map(({ label, icon: Icon, cls, href }) => (
+                  <div className="dropdown-link" key={label}>
+                    <a
+                      href={href}
+                      aria-label={
+                        label === "Todo List" ? "todo-list" : undefined
+                      }
+                      tabIndex={activeDropdown === "features" ? 0 : -1}
+                      onClick={closeMenus}
+                    >
+                      <span className={`feature-icon ${cls}`}>
+                        <Icon size={15} />
+                      </span>
+                      <span>{label}</span>
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div
@@ -174,132 +216,113 @@ function App() {
               >
                 Company
                 <ChevronDown
-                  className="chevron"
-                  size={14}
+                  className={`chevron ${
+                    activeDropdown === "company" ? "rotated" : ""
+                  }`}
+                  size={15}
                 />
               </button>
 
-              {activeDropdown === "company" && (
-                <div className="dropdown-list company-dropdown">
-                  {company.map(({ label, href }) => (
-                    <div className="dropdown-link" key={label}>
-                      <a href={href} onClick={closeMenus}>
-                        {label}
-                      </a>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div
+                className="dropdown-list company-dropdown"
+                aria-hidden={activeDropdown !== "company"}
+              >
+                {companyLinks.map(({ label, href }) => (
+                  <div className="dropdown-link" key={label}>
+                    <a
+                      href={href}
+                      tabIndex={activeDropdown === "company" ? 0 : -1}
+                      onClick={closeMenus}
+                    >
+                      {label}
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <a
-              className="nav-link simple-link"
-              href="#careers"
-              onClick={closeMenus}
-            >
+            <a className="nav-link simple-link" href="#careers" onClick={closeMenus}>
               Careers
             </a>
-
-            <a
-              className="nav-link simple-link"
-              href="#about"
-              onClick={closeMenus}
-            >
+            <a className="nav-link simple-link" href="#about" onClick={closeMenus}>
               About
             </a>
           </div>
 
-          <div className="registration">
-            <button
-              type="button"
-              className="login-button"
-              onClick={closeMenus}
-            >
+          <div className="auth-links">
+            <a className="login-link" href="#login" onClick={closeMenus}>
               Login
-            </button>
-
-            <button
-              type="button"
-              className="register-button"
-              onClick={closeMenus}
-            >
+            </a>
+            <a className="register-link" href="#register" onClick={closeMenus}>
               Register
-            </button>
+            </a>
           </div>
         </nav>
       </header>
 
-      <main className="hero">
-        <div className="hero-copy">
-          <div className="text-content">
-            <h1>
-              Make remote
-              <br className="desktop-break" /> work
-            </h1>
+      <main className="main">
+        <section className="hero">
+          <div className="hero-content">
+            <div className="hero-copy">
+              <h1>
+                Make
+                <br />
+                remote work
+              </h1>
 
-            <p>
-              Get your team in sync, no matter your location. Streamline
-              processes, create team rituals, and watch productivity soar.
-            </p>
+              <p>
+                Get your team in sync, no matter your location.
+                Streamline processes, create team rituals, and watch
+                productivity soar.
+              </p>
 
-            <button
-              type="button"
-              className="learn-more"
-              onClick={() =>
-                document
-                  .getElementById("about")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
-            >
-              Learn more
-            </button>
+              <a className="learn-more" href="#learn-more">
+                Learn more
+              </a>
+
+              <div className="client-logos" aria-label="Our clients">
+                {clients.map((client) => (
+                  <div
+                    className={`client-logo ${client.className}`}
+                    key={client.name}
+                  >
+                    <img src={client.src} alt={client.name} />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="hero-image">
+              <picture>
+                <source
+                  media="(max-width: 700px)"
+                  srcSet="./assets/images/image-hero-mobile.png"
+                />
+                <img
+                  src="./assets/images/image-hero-desktop.png"
+                  alt="A person working remotely at a desk"
+                />
+              </picture>
+            </div>
           </div>
-
-          <div className="clients" aria-label="Our clients">
-            <img
-              src="./assets/images/client-databiz.svg"
-              alt="Databiz"
-            />
-            <img
-              src="./assets/images/client-audiophile.svg"
-              alt="Audiophile"
-            />
-            <img
-              src="./assets/images/client-meet.svg"
-              alt="Meet"
-            />
-            <img
-              src="./assets/images/client-maker.svg"
-              alt="Maker"
-            />
-          </div>
-        </div>
-
-        <picture className="main-picture">
-          <source
-            media="(min-width: 701px)"
-            srcSet="./assets/images/image-hero-desktop.png"
-          />
-          <img
-            src="./assets/images/image-hero-mobile.png"
-            alt="A person planning and organizing tasks at a desk"
-          />
-        </picture>
+        </section>
       </main>
 
-      <footer className="attribution" id="about">
+      <footer className="attribution">
         Challenge by{" "}
         <a
-          href="https://crio.do"
+          href="https://www.frontendmentor.io?ref=challenge"
           target="_blank"
           rel="noreferrer"
         >
-          Crio.Do
+          Frontend Mentor
         </a>
-        . Coded with care.
+        . Coded by{" "}
+        <a href="https://github.com/" target="_blank" rel="noreferrer">
+          Your Name
+        </a>
+        .
       </footer>
     </div>
   );
 }
-
-export default App;
