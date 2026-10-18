@@ -704,3 +704,80 @@ a:focus-visible {
     width: 48px;
   }
 }
+
+
+.auth-links .login button,
+.auth-links .registration button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border: 0;
+  background: transparent;
+  color: #696969;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.auth-links .login button:hover {
+  color: #151515;
+}
+
+.auth-links .registration button {
+  min-width: 104px;
+  border: 1.5px solid #696969;
+  border-radius: 14px;
+}
+
+.auth-links .registration button:hover {
+  border-color: #151515;
+  color: #151515;
+}
+
+.text-content {
+  min-width: 0;
+  padding-top: 38px;
+}
+
+.text-content h1 {
+  margin: 0;
+  font-size: clamp(48px, 5.2vw, 80px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -2.5px;
+}
+
+.text-content p {
+  max-width: 445px;
+  margin: 42px 0 32px;
+  color: #696969;
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.clients {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  max-width: 465px;
+  margin-top: 105px;
+}
+
+.clients img {
+  display: block;
+  width: auto;
+  max-width: 22%;
+  height: auto;
+  object-fit: contain;
+}
+
+.hero-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+

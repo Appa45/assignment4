@@ -16,25 +16,25 @@ const features = [
   {
     label: "Todo List",
     icon: ListTodo,
-    cls: "purple",
+    className: "purple",
     href: "#todo-list",
   },
   {
     label: "Calendar",
     icon: CalendarDays,
-    cls: "blue",
+    className: "blue",
     href: "#calendar",
   },
   {
     label: "Reminders",
     icon: Bell,
-    cls: "yellow",
+    className: "yellow",
     href: "#reminders",
   },
   {
     label: "Planning",
     icon: Clock,
-    cls: "green",
+    className: "green",
     href: "#planning",
   },
 ];
@@ -45,33 +45,31 @@ const companyLinks = [
   { label: "Blog", href: "#blog" },
 ];
 
-const clients = [
-  {
-    name: "databiz",
-    className: "databiz",
-    src: "./assets/images/client-databiz.svg",
-  },
-  {
-    name: "audiophile",
-    className: "audiophile",
-    src: "./assets/images/client-audiophile.svg",
-  },
-  {
-    name: "meet",
-    className: "meet",
-    src: "./assets/images/client-meet.svg",
-  },
-  {
-    name: "maker",
-    className: "maker",
-    src: "./assets/images/client-maker.svg",
-  },
-];
-
 export default function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia("(max-width: 700px)").matches
+  );
+
   const navRef = useRef(null);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 700px)");
+
+    const handleViewportChange = (event) => {
+      setIsMobile(event.matches);
+      setMobileOpen(false);
+      setActiveDropdown(null);
+    };
+
+    setIsMobile(mediaQuery.matches);
+    mediaQuery.addEventListener("change", handleViewportChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleViewportChange);
+    };
+  }, []);
 
   const closeMenus = () => {
     setMobileOpen(false);
@@ -115,7 +113,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="header">
-        <a className="logo" href="#" aria-label="Snap home" alt="snap's logo">
+        <a className="logo" href="#" alt="snap's logo">
           <img
             src="./assets/images/logo.svg"
             alt="snap's logo"
@@ -129,7 +127,7 @@ export default function App() {
           aria-expanded={mobileOpen}
           onClick={() => setMobileOpen(true)}
         >
-          <Menu size={30} strokeWidth={2} />
+          <Menu size={30} />
         </button>
 
         <div
@@ -181,7 +179,7 @@ export default function App() {
                 className="dropdown-list features-dropdown"
                 aria-hidden={activeDropdown !== "features"}
               >
-                {features.map(({ label, icon: Icon, cls, href }) => (
+                {features.map(({ label, icon: Icon, className, href }) => (
                   <div className="dropdown-link" key={label}>
                     <a
                       href={href}
@@ -191,7 +189,7 @@ export default function App() {
                       tabIndex={activeDropdown === "features" ? 0 : -1}
                       onClick={closeMenus}
                     >
-                      <span className={`feature-icon ${cls}`}>
+                      <span className={`feature-icon ${className}`}>
                         <Icon size={15} />
                       </span>
                       <span>{label}</span>
@@ -244,18 +242,24 @@ export default function App() {
             <a className="nav-link simple-link" href="#careers" onClick={closeMenus}>
               Careers
             </a>
+
             <a className="nav-link simple-link" href="#about" onClick={closeMenus}>
               About
             </a>
           </div>
 
           <div className="auth-links">
-            <a className="login-link" href="#login" onClick={closeMenus}>
-              Login
-            </a>
-            <a className="register-link" href="#register" onClick={closeMenus}>
-              Register
-            </a>
+            <div className="login">
+              <button type="button" onClick={closeMenus}>
+                Login
+              </button>
+            </div>
+
+            <div className="registration">
+              <button type="button" onClick={closeMenus}>
+                Register
+              </button>
+            </div>
           </div>
         </nav>
       </header>
@@ -263,7 +267,7 @@ export default function App() {
       <main className="main">
         <section className="hero">
           <div className="hero-content">
-            <div className="hero-copy">
+            <div className="text-content">
               <h1>
                 Make
                 <br />
@@ -280,29 +284,35 @@ export default function App() {
                 Learn more
               </a>
 
-              <div className="client-logos" aria-label="Our clients">
-                {clients.map((client) => (
-                  <div
-                    className={`client-logo ${client.className}`}
-                    key={client.name}
-                  >
-                    <img src={client.src} alt={client.name} />
-                  </div>
-                ))}
+              <div className="clients">
+                <img
+                  src="./assets/images/client-databiz.svg"
+                  alt="databiz"
+                />
+                <img
+                  src="./assets/images/client-audiophile.svg"
+                  alt="audiophile"
+                />
+                <img
+                  src="./assets/images/client-meet.svg"
+                  alt="meet"
+                />
+                <img
+                  src="./assets/images/client-maker.svg"
+                  alt="maker"
+                />
               </div>
             </div>
 
             <div className="hero-image">
-              <picture>
-                <source
-                  media="(max-width: 700px)"
-                  srcSet="./assets/images/image-hero-mobile.png"
-                />
-                <img
-                  src="./assets/images/image-hero-desktop.png"
-                  alt="A person working remotely at a desk"
-                />
-              </picture>
+              <img
+                src={
+                  isMobile
+                    ? "./assets/images/image-hero-mobile.png"
+                    : "./assets/images/image-hero-desktop.png"
+                }
+                alt="Person working remotely"
+              />
             </div>
           </div>
         </section>
@@ -310,16 +320,12 @@ export default function App() {
 
       <footer className="attribution">
         Challenge by{" "}
-        <a
-          href="https://www.frontendmentor.io?ref=challenge"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Frontend Mentor
+        <a href="https://crio.do" target="_blank" rel="noreferrer">
+          Crio
         </a>
         . Coded by{" "}
-        <a href="https://github.com/" target="_blank" rel="noreferrer">
-          Your Name
+        <a href="https://crio.do" target="_blank" rel="noreferrer">
+          Crio
         </a>
         .
       </footer>
